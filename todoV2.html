@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TODO List</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .main-container {
+        width: 500px;
+        margin: 100px auto;
+        padding: 20px 10px;
+        background-image: url("https://shorturl.at/fEr1k");
+        text-align: center;
+        border: none;
+        border-radius: 15px;
+        font-size: 20px;
+      }
+
+      .input {
+        border: none;
+        font-size: 20px;
+        text-align: center;
+        width: 300px;
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 15px;
+      }
+
+      .task {
+        width: 450px;
+        margin-top: 20px;
+        padding: 10px;
+        display: flex; 
+        justify-content: space-between; 
+      }
+
+      .task > span {
+        max-width: 350px;
+        overflow: hidden;
+        margin-right: 10px;
+        width: 200px;
+      }
+
+      button {
+        width: 70px;
+        height: 40px;
+        border-radius: 10px;
+        font-size: 15px;
+        border: none;
+        font-weight: bold;
+      }
+      .checked {
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-container">
+      <h1>TODO List</h1>
+      <input type="text" class="input" placeholder="write task here" />
+      <button onclick="addTask();">Add</button>
+
+      <div id="taskList"></div>
+    </div>
+
+    <script>
+      function addTask() {
+        const taskList = document.getElementById("taskList"); // Get the task list container
+        const inputEl = document.querySelector(".input");
+        const taskValue = inputEl.value;
+
+        if (!taskValue) return; // Check for empty input
+
+        const taskItem = document.createElement("div"); // Create a container for the task
+        taskItem.className = "task"; // Add class for styling
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+
+        const span1 = document.createElement("span");
+        span1.innerHTML = taskValue;
+
+        const editBtn = document.createElement("button");
+        editBtn.innerHTML = "Edit";
+        editBtn.setAttribute("class", "spanBtn"); // Add class for styling
+        editBtn.addEventListener("click", function () {
+          const span = taskItem.querySelector("span");
+          const originalText = span.textContent;
+
+          span.contentEditable = true; // Make the span editable
+          span.focus(); // Focus on the span
+
+          // Add event listener  blur to check when the user stops editing
+          span.addEventListener("blur", function () {
+             span.contentEditable = false; // Make the span non-editable again
+          });
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.innerHTML = "Delete";
+        deleteBtn.setAttribute("class", "spanBtn"); // Add class for styling
+        deleteBtn.addEventListener("click", function () {
+          taskList.removeChild(taskItem); // Remove the task item from the list
+        });
+
+        checkbox.addEventListener("change", () => { // checkbox functionality
+          if (checkbox.checked) {
+            span1.classList.add("checked");
+          } else {
+            span1.classList.remove("checked");
+          }
+        });
+
+        taskItem.appendChild(checkbox);
+        taskItem.appendChild(span1);
+        taskItem.appendChild(editBtn);
+        taskItem.appendChild(deleteBtn);
+        taskList.appendChild(taskItem);
+        inputEl.value = "";
+      }
+    </script>
+  </body>
+</html>
